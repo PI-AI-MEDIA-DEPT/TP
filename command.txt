@@ -1,0 +1,11 @@
+docker run -it --name TP2 --restart always --network host --gpus all -v /home/paimedia/Desktop/my:/loc -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -v /dev/snd:/dev/snd -e="QT_X11_NO_MITSHM=1" -e NO_AT_BRIDGE=1 --user root --ipc=host -w /loc aimedia/gpuacc:0.5 python3 TP2.py
+
+
+docker run -it --name TP1 --restart always --network host --gpus all -v /home/paimedia/Desktop/my:/loc -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -v /dev/snd:/dev/snd -e="QT_X_111_NO_MITSHM=1" -e NO_AT_BRIDGE=1 --user root --ipc=host -w /loc aimedia/gpuacc:0.5 python3 TP_cam.py --src drive1.avi --camid 0 --out TP1
+docker run -d --name TP2 --restart always --network host --gpus all -v /home/paimedia/Desktop/my:/loc -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -v /dev/snd:/dev/snd -e="QT_X11_NO_MITSHM=1" -e NO_AT_BRIDGE=1 --user root --ipc=host -w /loc aimedia/gpuacc:0.5 python3 TP_cam.py --src drive2.avi --camid 1 --out TP2docker run -it --name TP2 --restart always --network host --gpus all -v /home/paimedia/Desktop/my:/loc -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=unix$DISPLAY -v /dev/snd:/dev/snd -e="QT_X11_NO_MITSHM=1" -e NO_AT_BRIDGE=1 --user root --ipc=host -w /loc aimedia/gpuacc:0.5 python3 TP2.py
+
+
+
+$(hostname -I | awk '{print $1}')
+
+docker run --restart always -it --name edge --runtime nvidia --device /dev/video0 -e INFLUX_TOKEN=$INFLUX_TOKEN -e INFLUX_BUCKET=$INFLUX_BUCKET -e INFLUX_ORG=$INFLUX_ORG -e INFLUX_HOST=$INFLUX_HOST --env HOST_IP=$(hostname -I | awk '{print $1}') --network host --volume /tmp/argus_socket:/tmp/argus_socket -v /home/jetson/jetsonEnv:/loc -w /loc --privileged aimedia/jetson-gst-yolov8:0.5 python3 stream.py
